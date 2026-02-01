@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bvxcjpjmrdnmc"]
 
 [ext_resource type="PackedScene" uid="uid://bhq8j3vgve8n2" path="res://World/world.tscn" id="1_e2o6t"]
-[ext_resource type="PackedScene" uid="uid://cdne2banlrbwx" path="res://Player/player.tscn" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://cueqmd64580hq" path="res://game.gd" id="1_feb5d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fc0e3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -18,6 +18,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [node name="Game" type="Node" unique_id=876111729]
+script = ExtResource("1_feb5d")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=114856872]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -28,4 +29,64 @@ environment = SubResource("Environment_ryrav")
 
 [node name="World" parent="." unique_id=1581451928 instance=ExtResource("1_e2o6t")]
 
-[node name="Player" parent="." unique_id=1068509545 instance=ExtResource("2_feb5d")]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1543076719]
+
+[node name="MainMenu" type="PanelContainer" parent="UI" unique_id=275483434]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 339.0
+offset_top = 151.0
+offset_right = -339.0
+offset_bottom = -151.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MainMenu" unique_id=1193564657]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="MainMenu" type="VBoxContainer" parent="UI/MainMenu/MarginContainer" unique_id=179428444]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="UI/MainMenu/MarginContainer/MainMenu" unique_id=1868844859]
+layout_mode = 2
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="JoinButton" type="Button" parent="UI/MainMenu/MarginContainer/MainMenu" unique_id=1037981847]
+layout_mode = 2
+text = "Join"
+
+[node name="HostButton" type="Button" parent="UI/MainMenu/MarginContainer/MainMenu" unique_id=1545336938]
+layout_mode = 2
+text = "Host"
+
+[node name="LobbyList" type="VBoxContainer" parent="UI/MainMenu/MarginContainer" unique_id=2019947070]
+visible = false
+layout_mode = 2
+
+[node name="filterName" type="LineEdit" parent="UI/MainMenu/MarginContainer/LobbyList" unique_id=75277600]
+layout_mode = 2
+alignment = 1
+
+[node name="lobbies" type="ScrollContainer" parent="UI/MainMenu/MarginContainer/LobbyList" unique_id=121662950]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu/MarginContainer/LobbyList/lobbies" unique_id=474047317]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1105073072]
+_spawnable_scenes = PackedStringArray("uid://cdne2banlrbwx")
+spawn_path = NodePath("..")
+
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="text_changed" from="UI/MainMenu/MarginContainer/LobbyList/filterName" to="." method="_on_filter_name_text_changed"]

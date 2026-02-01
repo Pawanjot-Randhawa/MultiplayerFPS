@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ce6fpqmc5qdjq" path="res://assets/Revolver.glb" id="2_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://dm7c37cs2m773" path="res://addons/kenney_particle_pack/star_06.png" id="3_btcbx"]
 [ext_resource type="AudioStream" uid="uid://ckuvko8fmhvfw" path="res://assets/Futuristic Sniper Rifle Single Shot.wav" id="4_gwnis"]
+[ext_resource type="Texture2D" uid="uid://df3om45k6j0p0" path="res://addons/kenney_particle_pack/circle_05.png" id="4_k53q1"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hvfyp"]
 
@@ -146,7 +147,19 @@ _data = {
 &"shoot": SubResource("Animation_k53q1")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gwnis"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Camera3D:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
 [node name="Player" type="CharacterBody3D" unique_id=1068509545]
+collision_layer = 2
 script = ExtResource("1_l8h54")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1965169771]
@@ -171,11 +184,37 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_fhl08")
 draw_pass_1 = SubResource("PlaneMesh_od3ui")
 
+[node name="TextureRect" type="TextureRect" parent="Camera3D" unique_id=841618895]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.05, 0.05)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("4_k53q1")
+stretch_mode = 5
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D" unique_id=435624255]
+target_position = Vector3(0, -1, -200)
+collision_mask = 2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=289935846]
 libraries/ = SubResource("AnimationLibrary_k53q1")
 autoplay = &"idle"
 playback_default_blend_time = 0.4
 
-[node name="gunshot_sound" type="AudioStreamPlayer" parent="." unique_id=1123045273]
+[node name="gunshot_sound" type="AudioStreamPlayer3D" parent="." unique_id=837065700]
 stream = ExtResource("4_gwnis")
 volume_db = -20.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=861181579]
+replication_config = SubResource("SceneReplicationConfig_gwnis")
+
+[node name="nameLabel" type="Label3D" parent="." unique_id=606186984]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1625369, 0)
+billboard = 2
+text = "test"
+uppercase = true
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
