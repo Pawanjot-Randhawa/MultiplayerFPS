@@ -1,10 +1,150 @@
 [gd_scene format=3 uid="uid://cdne2banlrbwx"]
 
 [ext_resource type="Script" uid="uid://ljqr61vjvf6q" path="res://Player/player.gd" id="1_l8h54"]
+[ext_resource type="PackedScene" uid="uid://ce6fpqmc5qdjq" path="res://assets/Revolver.glb" id="2_4ntmi"]
+[ext_resource type="Texture2D" uid="uid://dm7c37cs2m773" path="res://addons/kenney_particle_pack/star_06.png" id="3_btcbx"]
+[ext_resource type="AudioStream" uid="uid://ckuvko8fmhvfw" path="res://assets/Futuristic Sniper Rifle Single Shot.wav" id="4_gwnis"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hvfyp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l8h54"]
+
+[sub_resource type="Gradient" id="Gradient_gwnis"]
+offsets = PackedFloat32Array(0, 0.16393442, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k53q1"]
+gradient = SubResource("Gradient_gwnis")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fhl08"]
+angle_min = 45.00001
+angle_max = 45.00001
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_k53q1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vtle1"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 0.5803922, 1)
+albedo_texture = ExtResource("3_btcbx")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_od3ui"]
+material = SubResource("StandardMaterial3D_vtle1")
+size = Vector2(0.5, 0.5)
+orientation = 2
+
+[sub_resource type="Animation" id="Animation_btcbx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.45628178, -0.24951327, -0.44668144)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/gun:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(4.157784e-10, 1.5707964, -0.0095120445)]
+}
+
+[sub_resource type="Animation" id="Animation_gwnis"]
+resource_name = "idle"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0.45628178, -0.24951327, -0.44668144), Vector3(0.45628178, -0.24951327, -0.47389406)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/gun:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(4.157784e-10, 1.5707964, -0.0095120445), Vector3(7.464467e-09, 1.5707964, -0.17160077)]
+}
+
+[sub_resource type="Animation" id="Animation_4ntmi"]
+resource_name = "move"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(0.5, 2, 0.5, 2),
+"update": 0,
+"values": [Vector3(0.45628178, -0.24951327, -0.44668144), Vector3(0.42075247, -0.22606027, -0.44668144), Vector3(0.45628178, -0.24951327, -0.44668144), Vector3(0.5005147, -0.20153826, -0.44668144)]
+}
+
+[sub_resource type="Animation" id="Animation_k53q1"]
+resource_name = "shoot"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector3(0.456, -0.14331627, -0.447), Vector3(0.45628178, -0.24951327, -0.44668144)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/gun:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector3(2.3141503e-08, 1.5707964, 0.69872516), Vector3(4.157784e-10, 1.5707964, -0.0095120445)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k53q1"]
+_data = {
+&"RESET": SubResource("Animation_btcbx"),
+&"idle": SubResource("Animation_gwnis"),
+&"move": SubResource("Animation_4ntmi"),
+&"shoot": SubResource("Animation_k53q1")
+}
 
 [node name="Player" type="CharacterBody3D" unique_id=1068509545]
 script = ExtResource("1_l8h54")
@@ -17,3 +157,25 @@ shape = SubResource("CapsuleShape3D_l8h54")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=958835030]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5877843, 0)
+
+[node name="gun" parent="Camera3D" unique_id=349339023 instance=ExtResource("2_4ntmi")]
+transform = Transform3D(-4.3713353e-08, -1.8818275e-14, 1, -0.009511899, 0.9999545, -4.157784e-10, -0.9999545, -0.009511899, -4.371139e-08, 0.45628178, -0.24951327, -0.44668144)
+
+[node name="muzzle_flash" type="GPUParticles3D" parent="Camera3D/gun" unique_id=927013587]
+transform = Transform3D(1, -2.7939677e-09, 0, 2.7939677e-09, 1, 0, -1.0658141e-14, -5.551115e-17, 1, 0.59945905, 0.11782792, 2.9802322e-08)
+emitting = false
+amount = 1
+lifetime = 0.25
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_fhl08")
+draw_pass_1 = SubResource("PlaneMesh_od3ui")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=289935846]
+libraries/ = SubResource("AnimationLibrary_k53q1")
+autoplay = &"idle"
+playback_default_blend_time = 0.4
+
+[node name="gunshot_sound" type="AudioStreamPlayer" parent="." unique_id=1123045273]
+stream = ExtResource("4_gwnis")
+volume_db = -20.0

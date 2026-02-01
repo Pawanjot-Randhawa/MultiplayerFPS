@@ -50,16 +50,16 @@ size = Vector3(1, 5, 13)
 material = SubResource("StandardMaterial3D_oe8m4")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=939850265]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 11.133462, 4.0257063, -7.553515)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 10.493271, 4.0257063, -7.553515)
 operation = 2
 radius = 1.2841797
 
 [node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=61010960]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 11.133462, 4.0257063, -11.5535145)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 10.474773, 4.0257063, -11.5535145)
 operation = 2
 radius = 1.2841797
 
 [node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=752582985]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 11.133462, 4.0257063, -15.5535145)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 10.548276, 4.0257063, -15.5535145)
 operation = 2
 radius = 1.2841797
