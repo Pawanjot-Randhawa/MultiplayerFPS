@@ -107,6 +107,86 @@ mouse_filter = 2
 texture = ExtResource("3_feb5d")
 stretch_mode = 5
 
+[node name="LeaderBoard" type="PanelContainer" parent="UI" unique_id=562863964]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 118.0
+offset_top = 75.0
+offset_right = -118.0
+offset_bottom = -75.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/LeaderBoard" unique_id=822858272]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/LeaderBoard/MarginContainer" unique_id=361265255]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="names" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=429901846]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/names" unique_id=815871632]
+layout_mode = 2
+text = "Name"
+
+[node name="nameBox" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/names" unique_id=1097596700]
+layout_mode = 2
+
+[node name="spacer" type="Control" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=2027861062]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="kills" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=29604726]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/kills" unique_id=514190599]
+layout_mode = 2
+text = "Kills"
+
+[node name="killbox" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/kills" unique_id=1697170716]
+layout_mode = 2
+
+[node name="spacer2" type="Control" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=1478705551]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="deaths" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=1888820656]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/deaths" unique_id=1326617221]
+layout_mode = 2
+text = "Deaths"
+
+[node name="deathBox" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/deaths" unique_id=1739205369]
+layout_mode = 2
+
+[node name="spacer3" type="Control" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=1529636133]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="kda" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer" unique_id=8881092]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/kda" unique_id=344036518]
+layout_mode = 2
+text = "KD Ratio"
+
+[node name="kdabox" type="VBoxContainer" parent="UI/LeaderBoard/MarginContainer/HBoxContainer/kda" unique_id=990595495]
+layout_mode = 2
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1105073072]
 _spawnable_scenes = PackedStringArray("uid://cdne2banlrbwx")
 spawn_path = NodePath("..")

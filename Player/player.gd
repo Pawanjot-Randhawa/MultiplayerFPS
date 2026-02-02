@@ -1,6 +1,5 @@
 extends CharacterBody3D
 
-
 const SPEED = 10
 const JUMP_VELOCITY = 10
 var has_focus: bool = true
@@ -15,8 +14,17 @@ var player_name:String
 @onready var name_label: Label3D = $nameLabel
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 @onready var color_rect: ColorRect = $ColorRect
+@onready var PLAYERNAME: Label = $PLAYERNAME
 
 var health:int = 5
+
+var kills: int = 0
+
+var deaths:int = 0
+
+var kda:float = 0
+var showing_leaderboard:bool = false
+signal show_leaderboard(value:bool)
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
@@ -28,6 +36,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		has_focus = !has_focus
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if has_focus else Input.MOUSE_MODE_VISIBLE
 	if has_focus:
+		if Input.is_action_just_pressed("tab"):
+			print("Show leadaerboard signal sent")
+			showing_leaderboard = !showing_leaderboard
+			show_leaderboard.emit(showing_leaderboard)
 		if event is InputEventMouseMotion:
 			rotate_y(-event.relative.x * SENSITVITY)
 			camera.rotate_x(-event.relative.y * SENSITVITY)
@@ -38,14 +50,20 @@ func _unhandled_input(event: InputEvent) -> void:
 				var target = raycast.get_collider()
 				target.receive_dmg.rpc_id(str(target.name).to_int())
 func _ready() -> void:
+	add_to_group("players")
 	if not is_multiplayer_authority():
 		return
 	
 	has_focus = true
 	camera.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	self.player_name = SteamManager.STEAM_USERNAME
-	name_label.text = self.player_name + " : "+ str(health)
+	
+	PLAYERNAME.text = SteamManager.STEAM_USERNAME
+	name_label.text = PLAYERNAME.text + " : "+ str(health)
+	
+	var game = get_parent()
+	if game:
+		self.show_leaderboard.connect(game.show_the_leadboard)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -79,7 +97,7 @@ func _physics_process(delta: float) -> void:
 		animation_player.play("idle")
 	move_and_slide()
 
-@rpc("call_local")
+@rpc("call_local") #this animation is called on all peers as well as the local machine so that the player can see it
 func shoot_effect():
 	animation_player.stop()
 	animation_player.play("shoot")
@@ -87,7 +105,25 @@ func shoot_effect():
 	muzzle_flash.emitting = true
 	gunshot_sound.play()
 
-@rpc("any_peer")
+@rpc("any_peer","reliable", "call_local")
+func add_kill():
+	print("player " + str(multiplayer.get_unique_id()) + "got the kill")
+	print("valid kill peer")
+	self.kills += 1
+	if self.deaths < 1:
+		self.kda = kills
+	else:
+		self.kda = kills / deaths
+
+@rpc("any_peer","reliable", "call_local")
+func add_death():
+	self.deaths += 1
+	if self.kills < 1:
+		self.kda = 0
+	else:
+		self.kda = kills / deaths
+
+@rpc("any_peer", "reliable")
 func receive_dmg(): #receives damage and trigger a GUI red flash
 	print(
 	"\nCaller is : ", multiplayer.get_remote_sender_id(),
@@ -104,17 +140,25 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 	if health <= 0:
 		health = 5
 		position = Vector3(0.0, 10.0, 0.0)
-	#Play hit effect on all other clients
-	name_label.text = self.player_name + " : "+ str(health)
-	hit_animation.rpc(multiplayer.get_unique_id(), health)
+		inform_shooter(multiplayer.get_remote_sender_id())
+		add_death.rpc()
+	#Update label of this node
+	name_label.text = PLAYERNAME.text + " : "+ str(health)
+	#Play hit effect on all clients except local as we cant see ourselves
+	hit_animation.rpc()
 
-@rpc("call_remote") #Plays the flashing red capsule animation
-func hit_animation(peer_id, _health):
-	if self.name == str(peer_id):
-		mesh_instance_3d.material_override.albedo_color = Color(1.0, 0.0, 0.0, 1.0)
-		var tween = get_tree().create_tween()
-		tween.tween_property(mesh_instance_3d.material_override, "albedo_color", Color(1.0, 1.0, 1.0, 1.0), 0.4)
+@rpc("call_remote") #Plays the flashing red capsule animation, call remote will bnot call it on this pc
+func hit_animation():
+	mesh_instance_3d.material_override.albedo_color = Color(1.0, 0.0, 0.0, 1.0)
+	var tween = get_tree().create_tween()
+	tween.tween_property(mesh_instance_3d.material_override, "albedo_color", Color(1.0, 1.0, 1.0, 1.0), 0.4)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "shoot":
 		animation_player.play("idle")
+
+func inform_shooter(peer_id: int): #Find the correct player node that got the kill and trigger the rpc
+	for p in get_tree().get_nodes_in_group("players"):
+		if p.name == str(peer_id):
+			print("Player " + p.PLAYERNAME.text + "got the kill, id :" + str(peer_id))
+			p.add_kill.rpc()

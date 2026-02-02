@@ -14,6 +14,12 @@ var peer:SteamMultiplayerPeer = SteamMultiplayerPeer.new()
 @onready var main_menu_container: VBoxContainer = $UI/MainMenu/MarginContainer/MainMenu
 @onready var filter_name: LineEdit = $UI/MainMenu/MarginContainer/LobbyList/filterName
 @onready var hud: Control = $UI/HUD
+@onready var names_box: VBoxContainer = $UI/LeaderBoard/MarginContainer/HBoxContainer/names/nameBox
+@onready var kills_box: VBoxContainer = $UI/LeaderBoard/MarginContainer/HBoxContainer/kills/killbox
+@onready var deaths_box: VBoxContainer = $UI/LeaderBoard/MarginContainer/HBoxContainer/deaths/deathBox
+@onready var kda_box: VBoxContainer = $UI/LeaderBoard/MarginContainer/HBoxContainer/kda/kdabox
+@onready var leader_board: PanelContainer = $UI/LeaderBoard
+
 
 const PLAYER = preload("uid://cdne2banlrbwx")
 
@@ -87,9 +93,11 @@ func join_lobby(_lobby_id):
 
 # Adds a player with there ID
 func add_player(peer_id):
+	print(str(peer_id) + " Joined")
 	var p = PLAYER.instantiate()
 	p.name = str(peer_id)
 	add_child(p)
+	print("Connected")
 func remove_player(peer_id):
 	var p = get_node_or_null(str(peer_id))
 	if p:
@@ -116,4 +124,36 @@ func _on_filter_name_text_changed(new_text: String) -> void:
 				lobby.show()
 			else:
 				lobby.hide()
+
+func show_the_leadboard(value: bool):
+	print("showing leaderboard: " + str(value))
+	if value:
+		leader_board.show()
+		for l in kills_box.get_children():
+			l.queue_free()
+		for l in deaths_box.get_children():
+			l.queue_free()
+		for l in names_box.get_children():
+			l.queue_free()
+		for l in kda_box.get_children():
+			l.queue_free()
+		var players = get_tree().get_nodes_in_group("players")
+		for p in players:
+			var username: Label = Label.new()
+			username.text = p.PLAYERNAME.text
+			names_box.add_child(username)
+			
+			var kills: Label = Label.new()
+			kills.text = str(p.kills)
+			kills_box.add_child(kills)
+			
+			var deaths: Label = Label.new()
+			deaths.text = str(p.deaths)
+			deaths_box.add_child(deaths)
+			
+			var kda: Label = Label.new()
+			kda.text = str(p.kda)
+			kda_box.add_child(kda)
+	else:
+		leader_board.hide()
 	
