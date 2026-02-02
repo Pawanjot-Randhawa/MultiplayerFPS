@@ -39,12 +39,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				target.receive_dmg.rpc_id(str(target.name).to_int())
 func _ready() -> void:
 	if not is_multiplayer_authority():
-		name_label.text = player_name + " : "+ str(health)
 		return
+	
 	has_focus = true
 	camera.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	player_name = SteamManager.STEAM_USERNAME
+	self.player_name = SteamManager.STEAM_USERNAME
+	name_label.text = self.player_name + " : "+ str(health)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -104,12 +105,12 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 		health = 5
 		position = Vector3(0.0, 10.0, 0.0)
 	#Play hit effect on all other clients
+	name_label.text = self.player_name + " : "+ str(health)
 	hit_animation.rpc(multiplayer.get_unique_id(), health)
 
 @rpc("call_remote") #Plays the flashing red capsule animation
 func hit_animation(peer_id, _health):
 	if self.name == str(peer_id):
-		name_label.text = player_name + " : "+ str(_health)
 		mesh_instance_3d.material_override.albedo_color = Color(1.0, 0.0, 0.0, 1.0)
 		var tween = get_tree().create_tween()
 		tween.tween_property(mesh_instance_3d.material_override, "albedo_color", Color(1.0, 1.0, 1.0, 1.0), 0.4)
