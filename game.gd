@@ -128,32 +128,34 @@ func _on_filter_name_text_changed(new_text: String) -> void:
 func show_the_leadboard(value: bool):
 	print("showing leaderboard: " + str(value))
 	if value:
+		reload_leaderboard()
 		leader_board.show()
-		for l in kills_box.get_children():
-			l.queue_free()
-		for l in deaths_box.get_children():
-			l.queue_free()
-		for l in names_box.get_children():
-			l.queue_free()
-		for l in kda_box.get_children():
-			l.queue_free()
-		var players = get_tree().get_nodes_in_group("players")
-		for p in players:
-			var username: Label = Label.new()
-			username.text = p.PLAYERNAME.text
-			names_box.add_child(username)
-			
-			var kills: Label = Label.new()
-			kills.text = str(p.kills)
-			kills_box.add_child(kills)
-			
-			var deaths: Label = Label.new()
-			deaths.text = str(p.deaths)
-			deaths_box.add_child(deaths)
-			
-			var kda: Label = Label.new()
-			kda.text = str(p.kda)
-			kda_box.add_child(kda)
 	else:
 		leader_board.hide()
 	
+func reload_leaderboard():
+	for l in kills_box.get_children():
+		l.queue_free()
+	for l in deaths_box.get_children():
+		l.queue_free()
+	for l in names_box.get_children():
+		l.queue_free()
+	for l in kda_box.get_children():
+		l.queue_free()
+	var players = get_tree().get_nodes_in_group("players")
+	for p in players:
+		var username: Label = Label.new()
+		username.text = p.PLAYERNAME.text
+		names_box.add_child(username)
+		
+		var kills: Label = Label.new()
+		kills.text = str(p.kills)
+		kills_box.add_child(kills)
+		
+		var deaths: Label = Label.new()
+		deaths.text = str(p.deaths)
+		deaths_box.add_child(deaths)
+		
+		var kda: Label = Label.new()
+		kda.text = str(p.kda)
+		kda_box.add_child(kda)

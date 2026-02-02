@@ -18,13 +18,24 @@ var player_name:String
 
 var health:int = 5
 
-var kills: int = 0
+var kills: int = 0:
+	set(value):
+		stat_change.emit()
+		kills = value
 
-var deaths:int = 0
+var deaths:int = 0:
+	set(value):
+		stat_change.emit()
+		deaths = value
 
-var kda:float = 0
+var kda:float = 0:
+	set(value):
+		stat_change.emit()
+		kda = value
+
 var showing_leaderboard:bool = false
 signal show_leaderboard(value:bool)
+signal stat_change
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
@@ -64,6 +75,7 @@ func _ready() -> void:
 	var game = get_parent()
 	if game:
 		self.show_leaderboard.connect(game.show_the_leadboard)
+		self.stat_change.connect(game.reload_leaderboard)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -113,7 +125,7 @@ func add_kill():
 	if self.deaths < 1:
 		self.kda = kills
 	else:
-		self.kda = kills / deaths
+		self.kda = float(kills) / deaths
 
 @rpc("any_peer","reliable", "call_local")
 func add_death():
@@ -141,9 +153,9 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 		health = 5
 		position = Vector3(0.0, 10.0, 0.0)
 		inform_shooter(multiplayer.get_remote_sender_id())
-		add_death.rpc()
+		add_death.rpc() # call death on this node for all
 	#Update label of this node
-	name_label.text = PLAYERNAME.text + " : "+ str(health)
+	name_label.text = PLAYERNAME.text + " : "+ str(health) # NOTE this only works because name label is synced, normally its only updating for this caller
 	#Play hit effect on all clients except local as we cant see ourselves
 	hit_animation.rpc()
 
