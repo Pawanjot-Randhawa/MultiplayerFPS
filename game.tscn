@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bhq8j3vgve8n2" path="res://World/world.tscn" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://cueqmd64580hq" path="res://game.gd" id="1_feb5d"]
+[ext_resource type="Texture2D" uid="uid://df3om45k6j0p0" path="res://addons/kenney_particle_pack/circle_05.png" id="3_feb5d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fc0e3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -82,6 +83,29 @@ size_flags_vertical = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu/MarginContainer/LobbyList/lobbies" unique_id=474047317]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="HUD" type="Control" parent="UI" unique_id=1195317487]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/HUD" unique_id=1846309525]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.05, 0.05)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("3_feb5d")
+stretch_mode = 5
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1105073072]
 _spawnable_scenes = PackedStringArray("uid://cdne2banlrbwx")

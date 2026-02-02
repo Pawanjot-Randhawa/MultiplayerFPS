@@ -13,6 +13,7 @@ var peer:SteamMultiplayerPeer = SteamMultiplayerPeer.new()
 @onready var lobby_list_container: VBoxContainer = $UI/MainMenu/MarginContainer/LobbyList
 @onready var main_menu_container: VBoxContainer = $UI/MainMenu/MarginContainer/MainMenu
 @onready var filter_name: LineEdit = $UI/MainMenu/MarginContainer/LobbyList/filterName
+@onready var hud: Control = $UI/HUD
 
 const PLAYER = preload("uid://cdne2banlrbwx")
 
@@ -82,6 +83,7 @@ func join_lobby(_lobby_id):
 	Steam.joinLobby(_lobby_id)
 	SteamManager.lobby_id = _lobby_id
 	main_menu.hide()
+	hud.show()
 
 # Adds a player with there ID
 func add_player(peer_id):
@@ -95,6 +97,7 @@ func remove_player(peer_id):
 #Triggered when pressing host from Main Menu
 func _on_host_button_pressed() -> void:
 	main_menu.hide()
+	hud.show()
 	if lobby_created:
 		return
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC)

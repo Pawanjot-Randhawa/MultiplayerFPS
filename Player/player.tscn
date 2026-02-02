@@ -4,9 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://ce6fpqmc5qdjq" path="res://assets/Revolver.glb" id="2_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://dm7c37cs2m773" path="res://addons/kenney_particle_pack/star_06.png" id="3_btcbx"]
 [ext_resource type="AudioStream" uid="uid://ckuvko8fmhvfw" path="res://assets/Futuristic Sniper Rifle Single Shot.wav" id="4_gwnis"]
-[ext_resource type="Texture2D" uid="uid://df3om45k6j0p0" path="res://addons/kenney_particle_pack/circle_05.png" id="4_k53q1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k53q1"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hvfyp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gwnis"]
+albedo_color = Color(1, 0.09019608, 0, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l8h54"]
 
@@ -64,6 +68,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(4.157784e-10, 1.5707964, -0.0095120445)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:surface_material_override/0")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("StandardMaterial3D_gwnis")]
 }
 
 [sub_resource type="Animation" id="Animation_gwnis"]
@@ -163,7 +179,9 @@ collision_layer = 2
 script = ExtResource("1_l8h54")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1965169771]
+material_override = SubResource("StandardMaterial3D_k53q1")
 mesh = SubResource("CapsuleMesh_hvfyp")
+surface_material_override/0 = SubResource("StandardMaterial3D_gwnis")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1229074969]
 shape = SubResource("CapsuleShape3D_l8h54")
@@ -184,17 +202,6 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_fhl08")
 draw_pass_1 = SubResource("PlaneMesh_od3ui")
 
-[node name="TextureRect" type="TextureRect" parent="Camera3D" unique_id=841618895]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.05, 0.05)
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("4_k53q1")
-stretch_mode = 5
-
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D" unique_id=435624255]
 target_position = Vector3(0, -1, -200)
 collision_mask = 2
@@ -214,7 +221,6 @@ replication_config = SubResource("SceneReplicationConfig_gwnis")
 [node name="nameLabel" type="Label3D" parent="." unique_id=606186984]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1625369, 0)
 billboard = 2
-text = "test"
 uppercase = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

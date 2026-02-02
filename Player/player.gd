@@ -13,8 +13,9 @@ var SENSITVITY: float = 0.005
 @onready var gunshot_sound: AudioStreamPlayer3D = $gunshot_sound
 @onready var raycast: RayCast3D = $Camera3D/RayCast3D
 @onready var name_label: Label3D = $nameLabel
+@onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 
-var health:int = 2
+var health:int = 5
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
@@ -42,6 +43,7 @@ func _ready() -> void:
 	has_focus = true
 	camera.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	name_label.text = Steam.getPersonaName()
 	
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -85,11 +87,24 @@ func shoot_effect():
 
 @rpc("any_peer")
 func receive_dmg():
+	var sender_id = multiplayer.get_remote_sender_id()
 	health -= 1
+	hit_animation.rpc()
 	if health <= 0:
 		#RESPAWN LOGIC HERE
-		health = 2
+		health = 5
 		position = Vector3(0.0, 10.0, 0.0)
+
+@rpc("call_local")
+func hit_animation():
+	print(
+	"peer:", multiplayer.get_unique_id(),
+	" node:", name,
+	" authority:", is_multiplayer_authority()
+	)
+	mesh_instance_3d.material_override.albedo_color = Color(1.0, 0.0, 0.0, 1.0)
+	var tween = get_tree().create_tween()
+	tween.tween_property(mesh_instance_3d.material_override, "albedo_color", Color(1.0, 1.0, 1.0, 1.0), 0.4)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "shoot":
