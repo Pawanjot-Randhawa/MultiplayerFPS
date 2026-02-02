@@ -5,7 +5,7 @@ const SPEED = 10
 const JUMP_VELOCITY = 10
 var has_focus: bool = true
 var SENSITVITY: float = 0.005
-
+var player_name:String
 
 @onready var camera: Camera3D = $Camera3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -14,6 +14,7 @@ var SENSITVITY: float = 0.005
 @onready var raycast: RayCast3D = $Camera3D/RayCast3D
 @onready var name_label: Label3D = $nameLabel
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
+@onready var color_rect: ColorRect = $ColorRect
 
 var health:int = 5
 
@@ -38,13 +39,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				target.receive_dmg.rpc_id(str(target.name).to_int())
 func _ready() -> void:
 	if not is_multiplayer_authority():
-		print("non")
+		name_label.text = player_name + " : "+ str(health)
 		return
 	has_focus = true
 	camera.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	name_label.text = Steam.getPersonaName()
-	
+	player_name = SteamManager.STEAM_USERNAME
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
 		return
@@ -86,25 +87,32 @@ func shoot_effect():
 	gunshot_sound.play()
 
 @rpc("any_peer")
-func receive_dmg():
-	var sender_id = multiplayer.get_remote_sender_id()
+func receive_dmg(): #receives damage and trigger a GUI red flash
+	print(
+	"\nCaller is : ", multiplayer.get_remote_sender_id(),
+	"\npeer is:", multiplayer.get_unique_id(),
+	"\npeer name:", Steam.getPersonaName(),
+	" \nauthority:", is_multiplayer_authority()
+	)
+	#Damage flash
+	color_rect.color = Color(1.0, 0.0, 0.0, 0.753)
+	var tween = get_tree().create_tween()
+	tween.tween_property(color_rect, "color", Color(1.0, 1.0, 1.0, 0.0), 0.3)
+	#Reduce health
 	health -= 1
-	hit_animation.rpc()
 	if health <= 0:
-		#RESPAWN LOGIC HERE
 		health = 5
 		position = Vector3(0.0, 10.0, 0.0)
+	#Play hit effect on all other clients
+	hit_animation.rpc(multiplayer.get_unique_id(), health)
 
-@rpc("call_local")
-func hit_animation():
-	print(
-	"peer:", multiplayer.get_unique_id(),
-	" node:", name,
-	" authority:", is_multiplayer_authority()
-	)
-	mesh_instance_3d.material_override.albedo_color = Color(1.0, 0.0, 0.0, 1.0)
-	var tween = get_tree().create_tween()
-	tween.tween_property(mesh_instance_3d.material_override, "albedo_color", Color(1.0, 1.0, 1.0, 1.0), 0.4)
+@rpc("call_remote") #Plays the flashing red capsule animation
+func hit_animation(peer_id, _health):
+	if self.name == str(peer_id):
+		name_label.text = player_name + " : "+ str(_health)
+		mesh_instance_3d.material_override.albedo_color = Color(1.0, 0.0, 0.0, 1.0)
+		var tween = get_tree().create_tween()
+		tween.tween_property(mesh_instance_3d.material_override, "albedo_color", Color(1.0, 1.0, 1.0, 1.0), 0.4)
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "shoot":
