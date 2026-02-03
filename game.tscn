@@ -20,14 +20,15 @@ glow_enabled = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_feb5d"]
 size = Vector3(1.3657227, 31.43866, 105.2334)
 
-[node name="Game" type="Node" unique_id=876111729]
+[node name="Game" type="Node" unique_id=876111729 node_paths=PackedStringArray("checkpoints")]
 script = ExtResource("1_feb5d")
+checkpoints = [NodePath("SpawnPoints/Marker3D"), NodePath("SpawnPoints/Marker3D2"), NodePath("SpawnPoints/Marker3D3"), NodePath("SpawnPoints/Marker3D4"), NodePath("SpawnPoints/Marker3D5"), NodePath("SpawnPoints/Marker3D6"), NodePath("SpawnPoints/Marker3D7"), NodePath("SpawnPoints/Marker3D8"), NodePath("SpawnPoints/Marker3D9"), NodePath("SpawnPoints/Marker3D10")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2023648046]
 environment = SubResource("Environment_7jktm")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=114856872]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+transform = Transform3D(-0.9626917, 0.2567663, -0.08541478, 0, 0.31564906, 0.948876, 0.27060047, 0.9134751, -0.30387273, 0, 0, 0)
 shadow_enabled = true
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1543076719]
@@ -212,6 +213,37 @@ shape = SubResource("BoxShape3D_feb5d")
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="Border" unique_id=98756334]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.6388264, 15.21933, -48.689903)
 shape = SubResource("BoxShape3D_feb5d")
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=1972953113]
+
+[node name="Marker3D" type="Marker3D" parent="SpawnPoints" unique_id=1122614065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 44)
+
+[node name="Marker3D2" type="Marker3D" parent="SpawnPoints" unique_id=1779834326]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 42)
+
+[node name="Marker3D3" type="Marker3D" parent="SpawnPoints" unique_id=1514062040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 6, 41)
+
+[node name="Marker3D4" type="Marker3D" parent="SpawnPoints" unique_id=1160098772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 6, 43)
+
+[node name="Marker3D5" type="Marker3D" parent="SpawnPoints" unique_id=1890901718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 6, 2)
+
+[node name="Marker3D6" type="Marker3D" parent="SpawnPoints" unique_id=855004170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 6, -1)
+
+[node name="Marker3D7" type="Marker3D" parent="SpawnPoints" unique_id=1851457698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 6, -42)
+
+[node name="Marker3D8" type="Marker3D" parent="SpawnPoints" unique_id=1423863280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -43)
+
+[node name="Marker3D9" type="Marker3D" parent="SpawnPoints" unique_id=347530419]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -41)
+
+[node name="Marker3D10" type="Marker3D" parent="SpawnPoints" unique_id=1495404823]
 
 [connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/HostButton" to="." method="_on_host_button_pressed"]

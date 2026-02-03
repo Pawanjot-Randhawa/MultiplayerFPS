@@ -15,6 +15,7 @@ var player_name:String
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 @onready var color_rect: ColorRect = $ColorRect
 @onready var PLAYERNAME: Label = $PLAYERNAME
+var game
 
 var health:int = 5
 
@@ -72,7 +73,7 @@ func _ready() -> void:
 	PLAYERNAME.text = SteamManager.STEAM_USERNAME
 	name_label.text = PLAYERNAME.text + " : "+ str(health)
 	
-	var game = get_parent()
+	game = get_parent()
 	if game:
 		self.show_leaderboard.connect(game.show_the_leadboard)
 		self.stat_change.connect(game.reload_leaderboard)
@@ -151,7 +152,7 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 	health -= 1
 	if health <= 0:
 		health = 5
-		position = Vector3(0.0, 10.0, 0.0) #THIS works as postion is being synced
+		position = game.get_spawn() #THIS works as postion is being synced, get spawn returns vector3
 		inform_shooter(multiplayer.get_remote_sender_id())
 		add_death.rpc() # call death on this node for all
 	#Update label of this node

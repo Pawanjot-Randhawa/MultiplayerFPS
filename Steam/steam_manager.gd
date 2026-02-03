@@ -12,6 +12,7 @@ var lobby_id:int
 #store people in lobby
 var lobby_memebrs:Array
 
+@export var checkpoints : Array[Marker3D] = []
 
 
 func _init() -> void:

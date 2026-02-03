@@ -5,6 +5,8 @@ var lobby_created:bool = false
 
 var peer:SteamMultiplayerPeer = SteamMultiplayerPeer.new()
 
+@export var checkpoints : Array[Marker3D] = []
+
 @onready var multiplayer_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 #UI
@@ -159,3 +161,7 @@ func reload_leaderboard():
 		var kda: Label = Label.new()
 		kda.text = str(p.kda)
 		kda_box.add_child(kda)
+
+func get_spawn() -> Vector3:
+	var index = randi() % 10
+	return checkpoints[index].position
