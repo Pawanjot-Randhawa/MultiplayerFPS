@@ -79,6 +79,7 @@ alignment = 1
 [node name="lobbies" type="ScrollContainer" parent="UI/MainMenu/MarginContainer/LobbyList" unique_id=121662950]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MainMenu/MarginContainer/LobbyList/lobbies" unique_id=474047317]
 layout_mode = 2
@@ -101,7 +102,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.05, 0.05)
+scale = Vector2(0.03, 0.03)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 texture = ExtResource("3_feb5d")

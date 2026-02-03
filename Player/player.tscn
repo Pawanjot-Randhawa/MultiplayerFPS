@@ -204,7 +204,8 @@ playback_default_blend_time = 0.4
 
 [node name="gunshot_sound" type="AudioStreamPlayer3D" parent="." unique_id=837065700]
 stream = ExtResource("4_gwnis")
-volume_db = -20.0
+volume_db = -25.0
+max_distance = 50.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=861181579]
 replication_config = SubResource("SceneReplicationConfig_gwnis")

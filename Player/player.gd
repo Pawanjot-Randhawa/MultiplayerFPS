@@ -133,7 +133,7 @@ func add_death():
 	if self.kills < 1:
 		self.kda = 0
 	else:
-		self.kda = kills / deaths
+		self.kda = float(kills) / deaths
 
 @rpc("any_peer", "reliable")
 func receive_dmg(): #receives damage and trigger a GUI red flash
