@@ -1,34 +1,34 @@
 [gd_scene format=3 uid="uid://bvxcjpjmrdnmc"]
 
-[ext_resource type="PackedScene" uid="uid://bhq8j3vgve8n2" path="res://World/world.tscn" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://cueqmd64580hq" path="res://game.gd" id="1_feb5d"]
 [ext_resource type="Texture2D" uid="uid://df3om45k6j0p0" path="res://addons/kenney_particle_pack/circle_05.png" id="3_feb5d"]
+[ext_resource type="PackedScene" uid="uid://b7ulwsrha2nsu" path="res://World/arena.tscn" id="4_fc0e3"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fc0e3"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_feb5d"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[sub_resource type="Sky" id="Sky_7jktm"]
-sky_material = SubResource("ProceduralSkyMaterial_fc0e3")
+[sub_resource type="Sky" id="Sky_fc0e3"]
+sky_material = SubResource("ProceduralSkyMaterial_feb5d")
 
-[sub_resource type="Environment" id="Environment_ryrav"]
+[sub_resource type="Environment" id="Environment_7jktm"]
 background_mode = 2
-sky = SubResource("Sky_7jktm")
-reflected_light_source = 2
+sky = SubResource("Sky_fc0e3")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_feb5d"]
+size = Vector3(1.3657227, 31.43866, 105.2334)
 
 [node name="Game" type="Node" unique_id=876111729]
 script = ExtResource("1_feb5d")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2023648046]
+environment = SubResource("Environment_7jktm")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=114856872]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1986939256]
-environment = SubResource("Environment_ryrav")
-
-[node name="World" parent="." unique_id=1581451928 instance=ExtResource("1_e2o6t")]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1543076719]
 
@@ -191,6 +191,27 @@ layout_mode = 2
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1105073072]
 _spawnable_scenes = PackedStringArray("uid://cdne2banlrbwx")
 spawn_path = NodePath("..")
+
+[node name="Arena" parent="." unique_id=1725929214 instance=ExtResource("4_fc0e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="Border" type="StaticBody3D" parent="." unique_id=453386091]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Border" unique_id=1265630386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.675259, 15.21933, 0)
+shape = SubResource("BoxShape3D_feb5d")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Border" unique_id=2083012682]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.69531, 15.21933, 0)
+shape = SubResource("BoxShape3D_feb5d")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Border" unique_id=1862908572]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.6388264, 15.21933, 48.666912)
+shape = SubResource("BoxShape3D_feb5d")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Border" unique_id=98756334]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.6388264, 15.21933, -48.689903)
+shape = SubResource("BoxShape3D_feb5d")
 
 [connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/HostButton" to="." method="_on_host_button_pressed"]

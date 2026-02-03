@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b7ulwsrha2nsu"]
+
+[ext_resource type="PackedScene" uid="uid://dtvfi6pogiab7" path="res://assets/lowpoly__fps__tdm__game__map_by_resoforge.glb" id="1_24pi4"]
+
+[node name="Arena" type="Node3D" unique_id=1725929214]
+
+[node name="Sketchfab_Scene" parent="." unique_id=118231401 instance=ExtResource("1_24pi4")]
+
+[editable path="Sketchfab_Scene"]

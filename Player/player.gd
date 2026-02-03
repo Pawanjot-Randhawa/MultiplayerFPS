@@ -151,7 +151,7 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 	health -= 1
 	if health <= 0:
 		health = 5
-		position = Vector3(0.0, 10.0, 0.0)
+		position = Vector3(0.0, 10.0, 0.0) #THIS works as postion is being synced
 		inform_shooter(multiplayer.get_remote_sender_id())
 		add_death.rpc() # call death on this node for all
 	#Update label of this node
