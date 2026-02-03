@@ -6,6 +6,7 @@ var has_focus: bool = true
 var SENSITVITY: float = 0.005
 var player_name:String
 
+@onready var skin: MeshInstance3D = $MeshInstance3D
 @onready var camera: Camera3D = $Camera3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var muzzle_flash: GPUParticles3D = $Camera3D/gun/muzzle_flash
@@ -38,6 +39,7 @@ var kda:float = 0:
 var showing_leaderboard:bool = false
 signal show_leaderboard(value:bool)
 signal stat_change
+signal commands
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
@@ -53,6 +55,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			print("Show leadaerboard signal sent")
 			showing_leaderboard = !showing_leaderboard
 			show_leaderboard.emit(showing_leaderboard)
+		if Input.is_action_just_pressed("commands") and not showing_leaderboard:
+			commands.emit()
 		if event is InputEventMouseMotion:
 			rotate_y(-event.relative.x * SENSITVITY)
 			camera.rotate_x(-event.relative.y * SENSITVITY)
@@ -78,6 +82,7 @@ func _ready() -> void:
 	if game:
 		self.show_leaderboard.connect(game.show_the_leadboard)
 		self.stat_change.connect(game.reload_leaderboard)
+		self.commands.connect(game.show_console)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 

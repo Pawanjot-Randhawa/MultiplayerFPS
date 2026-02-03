@@ -87,7 +87,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="HUD" type="Control" parent="UI" unique_id=1195317487]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -108,6 +107,16 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 texture = ExtResource("3_feb5d")
 stretch_mode = 5
+
+[node name="commands" type="LineEdit" parent="UI/HUD" unique_id=567240734]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 68.5
+grow_vertical = 0
 
 [node name="LeaderBoard" type="PanelContainer" parent="UI" unique_id=562863964]
 visible = false
@@ -248,3 +257,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -41)
 [connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="pressed" from="UI/MainMenu/MarginContainer/MainMenu/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="text_changed" from="UI/MainMenu/MarginContainer/LobbyList/filterName" to="." method="_on_filter_name_text_changed"]
+[connection signal="text_submitted" from="UI/HUD/commands" to="." method="_on_commands_text_submitted"]

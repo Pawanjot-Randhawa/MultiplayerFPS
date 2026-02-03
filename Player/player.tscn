@@ -7,6 +7,7 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k53q1"]
 resource_local_to_scene = true
+stencil_flags = 2
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hvfyp"]
 
