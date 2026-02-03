@@ -15,6 +15,7 @@ var player_name:String
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 @onready var color_rect: ColorRect = $ColorRect
 @onready var PLAYERNAME: Label = $PLAYERNAME
+@onready var progress_bar: ProgressBar = $MarginContainer/ProgressBar
 var game
 
 var health:int = 5
@@ -69,7 +70,7 @@ func _ready() -> void:
 	has_focus = true
 	camera.current = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
+	progress_bar.show()
 	PLAYERNAME.text = SteamManager.STEAM_USERNAME
 	name_label.text = PLAYERNAME.text + " : "+ str(health)
 	
@@ -145,11 +146,13 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 	" \nauthority:", is_multiplayer_authority()
 	)
 	#Damage flash
+	print("Flash occured")
 	color_rect.color = Color(1.0, 0.0, 0.0, 0.753)
 	var tween = get_tree().create_tween()
 	tween.tween_property(color_rect, "color", Color(1.0, 1.0, 1.0, 0.0), 0.3)
 	#Reduce health
 	health -= 1
+	
 	if health <= 0:
 		health = 5
 		position = game.get_spawn() #THIS works as postion is being synced, get spawn returns vector3
@@ -157,6 +160,7 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 		add_death.rpc() # call death on this node for all
 	#Update label of this node
 	name_label.text = PLAYERNAME.text + " : "+ str(health) # NOTE this only works because name label is synced, normally its only updating for this caller
+	progress_bar.value = float(health)
 	#Play hit effect on all clients except local as we cant see ourselves
 	hit_animation.rpc()
 
