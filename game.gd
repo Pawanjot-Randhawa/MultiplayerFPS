@@ -183,6 +183,7 @@ func _on_commands_text_submitted(new_text: String) -> void:
 	if new_text == "give_hacks":
 		for p in get_tree().get_nodes_in_group("players"):
 			p.skin.material_override.stencil_mode = BaseMaterial3D.STENCIL_MODE_XRAY
+			p.skin.material_override.stencil_color = Color("B266FF")
 		print("Wall Hacks On")
 	if new_text == "no_hacks":
 		for p in get_tree().get_nodes_in_group("players"):

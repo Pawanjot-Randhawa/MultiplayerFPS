@@ -5,9 +5,24 @@
 [ext_resource type="Texture2D" uid="uid://dm7c37cs2m773" path="res://addons/kenney_particle_pack/star_06.png" id="3_btcbx"]
 [ext_resource type="AudioStream" uid="uid://ckuvko8fmhvfw" path="res://assets/Futuristic Sniper Rifle Single Shot.wav" id="4_gwnis"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gwnis"]
+render_priority = 1
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.69803923, 0.4, 1, 1)
+grow = true
+grow_amount = 0.01
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+metadata/_stencil_owned = true
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k53q1"]
 resource_local_to_scene = true
+next_pass = SubResource("StandardMaterial3D_gwnis")
+stencil_mode = 1
 stencil_flags = 2
+stencil_color = Color(0.69803923, 0.4, 1, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hvfyp"]
 
