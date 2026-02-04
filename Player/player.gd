@@ -56,7 +56,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			showing_leaderboard = !showing_leaderboard
 			show_leaderboard.emit(showing_leaderboard)
 		if Input.is_action_just_pressed("commands") and not showing_leaderboard:
-			commands.emit()
+			Console.enable()
+			has_focus = false
 		if event is InputEventMouseMotion:
 			rotate_y(-event.relative.x * SENSITVITY)
 			camera.rotate_x(-event.relative.y * SENSITVITY)
@@ -78,6 +79,8 @@ func _ready() -> void:
 	PLAYERNAME.text = SteamManager.STEAM_USERNAME
 	name_label.text = PLAYERNAME.text + " : "+ str(health)
 	
+	Console.exit_chat.connect(func(): has_focus = true)
+	
 	game = get_parent()
 	if game:
 		self.show_leaderboard.connect(game.show_the_leadboard)
@@ -87,19 +90,18 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
 		return
-	if not has_focus:
-		return
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta *2.0
-
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and has_focus:
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("left", "right", "forward", "back")
+	if not has_focus:
+		input_dir = Vector2.ZERO
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * SPEED
