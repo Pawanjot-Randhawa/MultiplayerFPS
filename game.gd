@@ -21,7 +21,6 @@ var peer:SteamMultiplayerPeer = SteamMultiplayerPeer.new()
 @onready var deaths_box: VBoxContainer = $UI/LeaderBoard/MarginContainer/HBoxContainer/deaths/deathBox
 @onready var kda_box: VBoxContainer = $UI/LeaderBoard/MarginContainer/HBoxContainer/kda/kdabox
 @onready var leader_board: PanelContainer = $UI/LeaderBoard
-@onready var commands: LineEdit = $UI/HUD/commands
 
 
 const PLAYER = preload("uid://cdne2banlrbwx")
@@ -166,26 +165,3 @@ func reload_leaderboard():
 func get_spawn() -> Vector3:
 	var index = randi() % 10
 	return checkpoints[index].position
-	
-func show_console():
-	if commands.visible:
-		commands.hide()
-		commands.release_focus()
-	else:
-		commands.show()
-		commands.grab_focus()
-
-
-func _on_commands_text_submitted(new_text: String) -> void:
-	commands.hide()
-	commands.release_focus()
-	commands.text = ""
-	if new_text == "give_hacks":
-		for p in get_tree().get_nodes_in_group("players"):
-			p.skin.material_override.stencil_mode = BaseMaterial3D.STENCIL_MODE_XRAY
-			p.skin.material_override.stencil_color = Color("B266FF")
-		print("Wall Hacks On")
-	if new_text == "no_hacks":
-		for p in get_tree().get_nodes_in_group("players"):
-			p.skin.material_override.stencil_mode = BaseMaterial3D.STENCIL_MODE_DISABLED
-		print("Wall hacks off")

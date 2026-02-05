@@ -85,7 +85,6 @@ func _ready() -> void:
 	if game:
 		self.show_leaderboard.connect(game.show_the_leadboard)
 		self.stat_change.connect(game.reload_leaderboard)
-		self.commands.connect(game.show_console)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
