@@ -34,6 +34,7 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	if new_text.begins_with("/"):
 		if new_text == "rep-me":
 			self.log_global(SteamManager.STEAM_USERNAME + " IS HACKING")
+			line_edit.clear()
 			return
 		if new_text == "/hack":
 			for p in get_tree().get_nodes_in_group("players"):
@@ -41,12 +42,14 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 				p.skin.material_override.stencil_color = Color("B266FF")
 				self.log_local("Wall hacks are on")
 				print("Wall Hacks On")
+				line_edit.clear()
 				return
 		if new_text == "/hack-off":
 			for p in get_tree().get_nodes_in_group("players"):
 				p.skin.material_override.stencil_mode = BaseMaterial3D.STENCIL_MODE_DISABLED
 				self.log_local("Wall hacks are off")
 				print("Wall hacks off")
+				line_edit.clear()
 				return
 		self.log_local("Invalid command")
 		return
@@ -57,10 +60,11 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	line_edit.clear()
 
 func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
-	get_tree().create_timer(3).timeout.connect(fade_console)
 	if not toggled_on:
+		get_tree().create_timer(3).timeout.connect(fade_console)
 		release_focus()
 		line_edit.hide()
+		color_rect.hide()
 		exit_chat.emit()
 
 func enable():
@@ -79,3 +83,7 @@ func fade_console():
 		return
 	console.hide()
 	color_rect.hide()
+func stop_timers():
+	for node in get_children():
+		if node is Timer:
+			node.queue_free()
