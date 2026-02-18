@@ -3,6 +3,7 @@ extends Control
 @onready var console: RichTextLabel = $MarginContainer/HBoxContainer/RichTextLabel
 @onready var line_edit: LineEdit = $MarginContainer/HBoxContainer/LineEdit
 @onready var color_rect: ColorRect = $MarginContainer/ColorRect
+@onready var chat_popup_timer: Timer = $ChatPopupTimer
 
 signal exit_chat
 
@@ -25,10 +26,20 @@ func log_global(text:String):
 @rpc("any_peer", "reliable", "call_local")
 func global_chat(text:String, player:String):
 	console.add_text("\n"+ player + ": " + text)
+	if multiplayer.get_unique_id() != multiplayer.get_remote_sender_id(): #if this pc is not the sender
+		#toggle the conolse breifly to show the new message
+		console.show()
+		color_rect.show()
+		chat_popup_timer.start(3)
 
 @rpc("any_peer", "reliable", "call_local")
 func global_system(text:String):
 	console.add_text("\n"+ text)
+	if multiplayer.get_unique_id() != multiplayer.get_remote_sender_id(): #if this pc is not the sender
+		#toggle the conolse breifly to show the new message
+		console.show()
+		color_rect.show()
+		chat_popup_timer.start(3)
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	if new_text.begins_with("/"):
@@ -61,11 +72,13 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 
 func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
 	if not toggled_on:
-		get_tree().create_timer(3).timeout.connect(fade_console)
+		chat_popup_timer.start(3)
 		release_focus()
 		line_edit.hide()
 		color_rect.hide()
 		exit_chat.emit()
+	else:
+		chat_popup_timer.stop()
 
 func enable():
 	console.show()
@@ -83,7 +96,6 @@ func fade_console():
 		return
 	console.hide()
 	color_rect.hide()
-func stop_timers():
-	for node in get_children():
-		if node is Timer:
-			node.queue_free()
+
+func _on_chat_popup_timer_timeout() -> void:
+	fade_console()

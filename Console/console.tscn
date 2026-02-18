@@ -37,6 +37,11 @@ layout_mode = 2
 placeholder_text = "Type to chat"
 keep_editing_on_text_submit = true
 
+[node name="ChatPopupTimer" type="Timer" parent="." unique_id=1293316568]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="editing_toggled" from="MarginContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_editing_toggled"]
 [connection signal="focus_exited" from="MarginContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_focus_exited"]
 [connection signal="text_submitted" from="MarginContainer/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="timeout" from="ChatPopupTimer" to="." method="_on_chat_popup_timer_timeout"]
