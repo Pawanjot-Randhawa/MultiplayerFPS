@@ -22,7 +22,6 @@ size = Vector3(1.3657227, 31.43866, 105.2334)
 
 [node name="Game" type="Node" unique_id=876111729 node_paths=PackedStringArray("checkpoints")]
 script = ExtResource("1_feb5d")
-NET_MODE = null
 checkpoints = [NodePath("SpawnPoints/Marker3D"), NodePath("SpawnPoints/Marker3D2"), NodePath("SpawnPoints/Marker3D3"), NodePath("SpawnPoints/Marker3D4"), NodePath("SpawnPoints/Marker3D5"), NodePath("SpawnPoints/Marker3D6"), NodePath("SpawnPoints/Marker3D7"), NodePath("SpawnPoints/Marker3D8"), NodePath("SpawnPoints/Marker3D9"), NodePath("SpawnPoints/Marker3D10")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2023648046]

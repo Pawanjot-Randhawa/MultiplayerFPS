@@ -1,9 +1,9 @@
 extends Node
-
+@export_enum("Steam", "Local") var NET_MODE : String = "Local"
 
 var lobby_created:bool = false
 
-var peer:SteamMultiplayerPeer = SteamMultiplayerPeer.new()
+var peer: MultiplayerPeer
 
 @export var checkpoints : Array[Marker3D] = []
 
@@ -28,6 +28,12 @@ const PLAYER = preload("uid://cdne2banlrbwx")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if NET_MODE == "Local":
+		peer = ENetMultiplayerPeer.new()
+		SteamManager.STEAM_USERNAME = str(multiplayer.get_unique_id())
+	else:
+		peer = SteamMultiplayerPeer.new()
+	
 	Steam.lobby_created.connect(on_lobby_created)
 	Steam.lobby_joined.connect(on_lobby_joined)
 	Steam.lobby_match_list.connect(on_lobby_match_list)
@@ -62,6 +68,12 @@ func on_lobby_joined(lobby: int, permissons:int, locked:bool, response:int):
 func _on_join_button_pressed() -> void:
 	main_menu_container.hide()
 	lobby_list_container.show()
+	main_menu.hide()
+	hud.show()
+	if NET_MODE == "Local":
+		peer.create_client("127.0.0.1", 1027)
+		multiplayer.multiplayer_peer = peer #this is set automatically via singsla in steam version
+		return
 	#Clear any chuildren if there are any
 	var lobby_btns = lobbies.get_children()
 	for i in lobby_btns:
@@ -87,9 +99,13 @@ func on_lobby_match_list(lobbies: Array):
 		self.lobbies.add_child(but)
 
 #This is connect to the lobby buttons, allows player to join a lobby
-func join_lobby(_lobby_id):
-	Steam.joinLobby(_lobby_id)
-	SteamManager.lobby_id = _lobby_id
+func join_lobby(_lobby_id : int = 0):
+	if NET_MODE == "Local":
+		peer.create_client("127.0.0.1", 1027)
+		multiplayer.multiplayer_peer = peer #this is set automatically via singsla in steam version
+	elif NET_MODE == "Steam":
+		Steam.joinLobby(_lobby_id)
+		SteamManager.lobby_id = _lobby_id
 	main_menu.hide()
 	hud.show()
 
@@ -110,7 +126,11 @@ func _on_host_button_pressed() -> void:
 	hud.show()
 	if lobby_created:
 		return
-	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC)
+	if NET_MODE == "Local":
+		peer.create_server(1027)
+		multiplayer.multiplayer_peer = peer #this is set automatically via singsla in steam version
+	elif NET_MODE == "Steam":
+		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC)
 	multiplayer.peer_connected.connect(add_player) #when a player connects add them
 	multiplayer.peer_disconnected.connect(remove_player) #when a player leaves remove them
 	

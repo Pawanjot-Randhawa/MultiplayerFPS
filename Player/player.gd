@@ -145,12 +145,6 @@ func add_death():
 
 @rpc("any_peer", "reliable")
 func receive_dmg(): #receives damage and trigger a GUI red flash
-	print(
-	"\nCaller is : ", multiplayer.get_remote_sender_id(),
-	"\npeer is:", multiplayer.get_unique_id(),
-	"\npeer name:", Steam.getPersonaName(),
-	" \nauthority:", is_multiplayer_authority()
-	)
 	#Damage flash
 	print("Flash occured")
 	color_rect.color = Color(1.0, 0.0, 0.0, 0.753)

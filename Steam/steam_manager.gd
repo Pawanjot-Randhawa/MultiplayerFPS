@@ -25,8 +25,8 @@ func _ready() -> void:
 	Steam.steamInit()
 	
 	STEAM_ID = Steam.getSteamID()
-	
-	STEAM_USERNAME = Steam.getPersonaName()
+	if STEAM_USERNAME == "": #done to account for local case
+		STEAM_USERNAME = Steam.getPersonaName()
 	print(STEAM_USERNAME)
 
 func _process(delta: float) -> void:
