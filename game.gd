@@ -115,11 +115,18 @@ func add_player(peer_id):
 	var p = PLAYER.instantiate()
 	p.name = str(peer_id)
 	add_child(p)
-	print("Connected")
+	if multiplayer.is_server():
+		#Here for lcoal debugging delete after
+		p.PLAYERNAME.text = "Server"
+		SteamManager.STEAM_USERNAME = "Server"
+		Console.global_system.rpc(SteamManager.STEAM_USERNAME + " has joined!")
+
 func remove_player(peer_id):
 	var p = get_node_or_null(str(peer_id))
 	if p:
 		p.queue_free()
+		if multiplayer.is_server():
+			Console.global_system.rpc(SteamManager.STEAM_USERNAME + " has left!")
 #Triggered when pressing host from Main Menu
 func _on_host_button_pressed() -> void:
 	main_menu.hide()

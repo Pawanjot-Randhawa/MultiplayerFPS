@@ -32,13 +32,13 @@ func global_chat(text:String, player:String):
 		color_rect.show()
 		chat_popup_timer.start(3)
 
+#This is called for system wide messages, no one triggers these via chat so it should do a pop up animation
 @rpc("any_peer", "reliable", "call_local")
 func global_system(text:String):
 	console.add_text("\n"+ text)
-	if multiplayer.get_unique_id() != multiplayer.get_remote_sender_id(): #if this pc is not the sender
-		#toggle the conolse breifly to show the new message
-		console.show()
-		color_rect.show()
+	console.show()
+	color_rect.show()
+	if not line_edit.is_editing():
 		chat_popup_timer.start(3)
 
 func _on_line_edit_text_submitted(new_text: String) -> void:

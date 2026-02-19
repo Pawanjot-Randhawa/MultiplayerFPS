@@ -156,7 +156,7 @@ func receive_dmg(): #receives damage and trigger a GUI red flash
 	if health <= 0:
 		health = 5
 		position = game.get_spawn() #THIS works as postion is being synced, get spawn returns vector3
-		inform_shooter(multiplayer.get_remote_sender_id())
+		inform_shooter(multiplayer.get_remote_sender_id(), self.PLAYERNAME.text)
 		add_death.rpc() # call death on this node for all
 	#Update label of this node
 	name_label.text = PLAYERNAME.text + " : "+ str(health) # NOTE this only works because name label is synced, normally its only updating for this caller
@@ -174,8 +174,8 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "shoot":
 		animation_player.play("idle")
 
-func inform_shooter(peer_id: int): #Find the correct player node that got the kill and trigger the rpc
+func inform_shooter(peer_id: int, killed_player: String): #Find the correct player node that got the kill and trigger the rpc
 	for p in get_tree().get_nodes_in_group("players"):
 		if p.name == str(peer_id):
-			print("Player " + p.PLAYERNAME.text + "got the kill, id :" + str(peer_id))
 			p.add_kill.rpc()
+			Console.global_system.rpc("Player " + p.PLAYERNAME.text + " has killed " + killed_player)
