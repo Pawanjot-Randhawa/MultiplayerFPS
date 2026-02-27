@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://jbufj375wve3"]
+
+[ext_resource type="Script" uid="uid://3wrdm2kagii0" path="res://Anticheat/anticheat.gd" id="1_hh45e"]
+
+[node name="Anticheat" type="Node" unique_id=2144164724]
+script = ExtResource("1_hh45e")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=896807733]
+
+[node name="ScreenshotTimer" type="Timer" parent="." unique_id=443045880]
+one_shot = true
+
+[connection signal="timeout" from="ScreenshotTimer" to="." method="_on_screenshot_timer_timeout"]
