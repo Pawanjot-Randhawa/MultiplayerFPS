@@ -21,6 +21,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 
 [node name="stats" type="Label" parent="VBoxContainer" unique_id=256814999]
+visible = false
 layout_mode = 2
+text = "No Calls yet"
 
 [connection signal="timeout" from="ScreenshotTimer" to="." method="_on_screenshot_timer_timeout"]

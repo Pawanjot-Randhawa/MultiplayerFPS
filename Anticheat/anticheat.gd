@@ -68,3 +68,6 @@ func _on_screenshot_timer_timeout() -> void:
 
 func get_stats():
 	http.request(stats_url)
+
+func toggle_debug_stats():
+	stats.visible = !stats.visible

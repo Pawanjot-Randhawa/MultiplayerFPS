@@ -62,6 +62,10 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 				print("Wall hacks off")
 				line_edit.clear()
 				return
+		if new_text == "/debug":
+			Anticheat.toggle_debug_stats()
+			line_edit.clear()
+			return
 		self.log_local("Invalid command")
 		return
 	
