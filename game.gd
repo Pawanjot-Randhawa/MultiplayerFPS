@@ -68,9 +68,9 @@ func on_lobby_joined(lobby: int, permissons:int, locked:bool, response:int):
 func _on_join_button_pressed() -> void:
 	main_menu_container.hide()
 	lobby_list_container.show()
-	main_menu.hide()
-	hud.show()
 	if NET_MODE == "Local":
+		main_menu.hide()
+		hud.show()
 		peer.create_client("127.0.0.1", 1027)
 		multiplayer.multiplayer_peer = peer #this is set automatically via singsla in steam version
 		return
@@ -100,12 +100,12 @@ func on_lobby_match_list(lobbies: Array):
 
 #This is connect to the lobby buttons, allows player to join a lobby
 func join_lobby(_lobby_id : int = 0):
-	if NET_MODE == "Local":
-		peer.create_client("127.0.0.1", 1027)
-		multiplayer.multiplayer_peer = peer #this is set automatically via singsla in steam version
-	elif NET_MODE == "Steam":
-		Steam.joinLobby(_lobby_id)
-		SteamManager.lobby_id = _lobby_id
+	#if NET_MODE == "Local":
+		#peer.create_client("127.0.0.1", 1027)
+		#multiplayer.multiplayer_peer = peer #this is set automatically via singsla in steam version
+	#elif NET_MODE == "Steam":
+	Steam.joinLobby(_lobby_id)
+	SteamManager.lobby_id = _lobby_id
 	main_menu.hide()
 	hud.show()
 
